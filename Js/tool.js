@@ -1,1 +1,2 @@
-console.log("main.js is connected.");
+var userName = prompt("Please enter your name: ");
+console.log("Hello, " + userName + "!");
