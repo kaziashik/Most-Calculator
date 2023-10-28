@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stage Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .process-container {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Stage Calculator</h1>
+
+    <div id="stages-container">
+      <div class="stage-data" data-stage="1">
+        <h2>Stage 1</h2>
+        <div class="process-container" id="process-container-1">
+          <label for="processCount1">How many processes do you want to calculate?</label>
+          <input type="number" id="processCount1" min="1" value="1">
+          <div id="processTypes1"></div>
+        </div>
+      </div>
+
+      <div class="stage-data" data-stage="2">
+        <h2>Stage 2</h2>
+        <div class="process-container" id="process-container-2">
+          <label for="processCount2">How many processes do you want to calculate?</label>
+          <input type="number" id="processCount2" min="1" value="1">
+          <div id="processTypes2"></div>
+        </div>
+      </div>
+
+      <div class="stage-data" data-stage="3">
+        <h2>Stage 3</h2>
+        <div class="process-container" id="process-container-3">
+          <label for="processCount3">How many processes do you want to calculate?</label>
+          <input type="number" id="processCount3" min="1" value="1">
+          <div id="processTypes3"></div>
+        </div>
+      </div>
+
+      <div class="stage-data" data-stage="4">
+        <h2>Stage 4</h2>
+        <div class="process-container" id="process-container-4">
+          <label for="processCount4">How many processes do you want to calculate?</label>
+          <input type="number" id="processCount4" min="1" value="1">
+          <div id="processTypes4"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const stagesContainer = document.getElementById('stages-container');
+    const stageData = document.querySelectorAll('.stage-data');
+
+    stageData.forEach((stage) => {
+      stage.addEventListener('click', () => {
+        const stageNumber = stage.getAttribute('data-stage');
+        const processContainers = document.querySelectorAll('.process-container');
+        
+        processContainers.forEach((container) => {
+          container.style.display = 'none';
+        });
+
+        const processContainer = document.getElementById(`process-container-${stageNumber}`);
+        if (processContainer) {
+          processContainer.style.display = 'block';
+        }
+      });
+    });
+
+    const processCountInputs = document.querySelectorAll('input[type="number"]');
+    processCountInputs.forEach((input) => {
+      input.addEventListener('input', () => {
+        const stageNumber = input.id.replace('processCount', '');
+        const processTypesContainer = document.getElementById(`processTypes${stageNumber}`);
+        processTypesContainer.innerHTML = ''; // Clear existing process types
+
+        const processCount = parseInt(input.value, 10);
+        for (let i = 1; i <= processCount; i++) {
+          const processTypeSelect = document.createElement('select');
+          processTypeSelect.name = `processType${i}`;
+          processTypeSelect.innerHTML = `
+            <option value="control_move">Control Move</option>
+            <option value="general_move">General Move</option>
+            <option value="tool_use">Tool Use</option>
+          `;
+          processTypesContainer.appendChild(processTypeSelect);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
