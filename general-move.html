@@ -51,7 +51,7 @@
       <label for="a">Enter number A:</label>
       <select id="a" required>
         <option value="" disabled selected>Select A</option>
-        <option value="1">0</option>
+        <option value="0">0</option>
         <option value="1">1</option>
         <option value="3">3</option>
         <option value="6">6</option>
@@ -79,7 +79,7 @@
       <label for="b">Enter number B:</label>
       <select id="b" required>
         <option value="" disabled selected>Select B</option>
-        <option value="1">0</option>
+        <option value="0">0</option>
         <option value="3">3</option>
         <option value="6">6</option>
         <option value="10">10</option>
@@ -94,17 +94,15 @@
         <option value="6">6</option>
       </select>
 
-      <button type="button" onclick="calculateSumABG()">Calculate Sum</button>
     </form>
 
-    <p>Sum: <span id="resultABG"></span></p>
 
     <h3>ABP</h3>
     <form id="sumForm">
-      <label for="a">Enter number A:</label>
-      <select id="a" required>
+      <label for="a2">Enter number A:</label>
+      <select id="a2" required>
         <option value="" disabled selected>Select A</option>
-        <option value="1">0</option>
+        <option value="0">0</option>
         <option value="1">1</option>
         <option value="3">3</option>
         <option value="6">6</option>
@@ -129,10 +127,10 @@
         <option value="330">330</option>
       </select>
 
-      <label for="b">Enter number B:</label>
-      <select id="b" required>
+      <label for="b2">Enter number B:</label>
+      <select id="b2" required>
         <option value="" disabled selected>Select B</option>
-        <option value="1">0</option>
+        <option value="0">0</option>
         <option value="3">3</option>
         <option value="6">6</option>
         <option value="10">10</option>
@@ -146,19 +144,18 @@
         <option value="1">1</option>
         <option value="3">3</option>
         <option value="6">6</option>
+        <option value="10">10</option>
+
       </select>
 
-      <button type="button" onclick="calculateSumABP()">Calculate Sum</button>
     </form>
-
-    <p>Sum: <span id="resultABP"></span></p>
 
     <h3>A</h3>
     <form id="sumForm">
-      <label for="a">Enter number A:</label>
-      <select id="a" required>
+      <label for="a3">Enter number A:</label>
+      <select id="a3" required>
         <option value="" disabled selected>Select A</option>
-        <option value="1">0</option>
+        <option value="0">0</option>
         <option value="1">1</option>
         <option value="3">3</option>
         <option value="6">6</option>
@@ -182,51 +179,42 @@
         <option value="300">300</option>
         <option value="330">330</option>
       </select>
-
-      <button type="button" onclick="calculateSumA()">Calculate Sum</button>
+      
     </form>
 
-    <p>Sum: <span id="resultA"></span></p>
+    <button type="button" onclick="calculateFinalSum()">Calculate Sum</button>
 
     <p>Final Sum: <span id="result"></span></p>
+    <p>Time: <span id="time"></span></p>
+    <p>Standard Time: <span id="standardTime"></span></p>
   </div>
 
   <script>
-    function calculateSumABG() {
+
+    function calculateFinalSum() {
       var a = parseFloat(document.getElementById("a").value);
       var b = parseFloat(document.getElementById("b").value);
       var g = parseFloat(document.getElementById("g").value);
 
-      if (!isNaN(a) && !isNaN(b) && !isNaN(g)) {
-        var sum = (10 * a) + (10 * b) + (10 * g);
-        document.getElementById("resultABG").textContent = sum;
-      } else {
-        alert("Please enter valid numbers for A, B, and C.");
-      }
-    }
-
-    function calculateSumABP() {
-      var a = parseFloat(document.getElementById("a").value);
-      var b = parseFloat(document.getElementById("b").value);
+      var a2 = parseFloat(document.getElementById("a2").value);
+      var b2 = parseFloat(document.getElementById("b2").value);
       var p = parseFloat(document.getElementById("p").value);
 
-      if (!isNaN(a) && !isNaN(b) && !isNaN(p)) {
-        var sum = (10 * a) + (10 * b) + (10 * p);
-        document.getElementById("resultABP").textContent = sum;
-      } else {
-        alert("Please enter valid numbers for A, B, and P.");
-      }
-    }
+      var a3 = parseFloat(document.getElementById("a3").value);
 
-    function calculateSumA() {
-      var a = parseFloat(document.getElementById("a").value);
-
-      if (!isNaN(a)) {
-        var sum = (10 * a);
-        document.getElementById("resultA").textContent = sum;
+      if (!isNaN(a) && !isNaN(b) && !isNaN(g) && !isNaN(a2) && !isNaN(b2) && !isNaN(p) && !isNaN(a3)) {
+        var sum = (10 * a) + (10 * b) + (10 * g) + (10 * a2) + (10 * b2) + (10 * p) + (10 * a3);
+        document.getElementById("result").textContent = sum;
       } else {
         alert("Please enter valid numbers for A.");
       }
+
+      var time = sum * 0.00001;
+      var standardTime = time * (1 + 0.15);
+
+      document.getElementById("time").textContent = time;
+      document.getElementById("standardTime").textContent = standardTime.toFixed(4);
+
     }
   </script>
 </body>
