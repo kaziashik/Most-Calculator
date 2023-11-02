@@ -215,6 +215,20 @@
       document.getElementById("time").textContent = time;
       document.getElementById("standardTime").textContent = standardTime.toFixed(4);
 
+      // Example calculation
+      let result = standardTime.toFixed(4);;  // Do the necessary calculation here
+
+      // Get the current stage and process index from localStorage
+      const currentProcessIndex = localStorage.getItem('currentProcessIndex');
+      const currentStage = localStorage.getItem('currentStage');
+
+      // Store the result in localStorage
+      localStorage.setItem(`result${currentStage}_${currentProcessIndex}`, result);
+
+      // Redirect back to the main page
+      window.location.href = 'testingbutton2.html';
+
+
     }
   </script>
 </body>

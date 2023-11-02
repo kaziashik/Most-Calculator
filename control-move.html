@@ -40,12 +40,17 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
+    
   </style>
 </head>
 <body>
   <div class="container">
 
     <h2>Controlled Move</h2>
+
+    
+
     <h3>ABG</h3>
     <form id="sumForm">
       <label for="a">Enter number A:</label>
@@ -186,6 +191,9 @@
 
   <script>
     function calculateFinalSum() {
+
+      
+
       var a = parseFloat(document.getElementById("a").value);
       var b = parseFloat(document.getElementById("b").value);
       var g = parseFloat(document.getElementById("g").value);
@@ -195,6 +203,8 @@
       var i = parseFloat(document.getElementById("i").value);
 
       var a2 = parseFloat(document.getElementById("a2").value);
+
+      
 
       if (!isNaN(a) && !isNaN(b) && !isNaN(g) && !isNaN(m) && !isNaN(x) && !isNaN(i) && !isNaN(a2)) {
         var sum = (10 * a) + (10 * b) + (10 * g) + (10 * m) + (10 * x) + (10 * i) + (10 * a2);
@@ -209,6 +219,18 @@
       document.getElementById("time").textContent = time;
       document.getElementById("standardTime").textContent = standardTime.toFixed(4);
 
+      // Example calculation
+      let result = standardTime.toFixed(4);;  // Do the necessary calculation here
+
+      // Get the current stage and process index from localStorage
+      const currentProcessIndex = localStorage.getItem('currentProcessIndex');
+      const currentStage = localStorage.getItem('currentStage');
+
+      // Store the result in localStorage
+      localStorage.setItem(`result${currentStage}_${currentProcessIndex}`, result);
+
+      // Redirect back to the main page
+      window.location.href = 'testingbutton2.html';
 
     }
 

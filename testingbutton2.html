@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Stage Calculator</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+}
+
+select, input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.process-container {
+    display: none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f5f5f5;
+}
+
+    </style>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Stage Calculator</h1>
+
+        <label for="stage">Select Stage:</label>
+        <select id="stage">
+            <option value="1">Stage 1</option>
+            <option value="2">Stage 2</option>
+            <option value="3">Stage 3</option>
+            <option value="4">Stage 4</option>
+        </select>
+
+        <div id="process-container" class="process-container">
+            <label for="processCount">How many processes do you want to calculate?</label>
+            <input type="number" id="processCount" min="1" value="1">
+        </div>
+
+        <div id="process-type-container" class="process-container">
+            <p>Choose the type for each process:</p>
+            <div id="processTypes"></div>
+        </div>
+
+        <p id="totalSum"></p>
+        <table id="totalsTable">
+            <thead>
+                <tr>
+                    <th>Stage</th>
+                    <th>Total Sum</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Stage 1</td>
+                    <td id="totalForStage1">0</td>
+                </tr>
+                <tr>
+                    <td>Stage 2</td>
+                    <td id="totalForStage2">0</td>
+                </tr>
+                <tr>
+                    <td>Stage 3</td>
+                    <td id="totalForStage3">0</td>
+                </tr>
+                <tr>
+                    <td>Stage 4</td>
+                    <td id="totalForStage4">0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const stageSelect = document.getElementById('stage');
+const processContainer = document.getElementById('process-container');
+const processTypeContainer = document.getElementById('process-type-container');
+const processCountInput = document.getElementById('processCount');
+const processTypesContainer = document.getElementById('processTypes');
+
+function updateTotal(stage) {
+    const results = Array.from(document.querySelectorAll('.result'));
+    let totalSum = results.reduce((acc, result) => acc + parseFloat(result.textContent), 0);
+    localStorage.setItem(`totalForStage${stage}`, totalSum);
+
+    // Update table cell for the specific stage
+    document.getElementById(`totalForStage${stage}`).textContent = totalSum;
+
+    // If you want to also display the total sum in the previous <p> element, you can uncomment the line below
+    // document.getElementById('totalSum').textContent = `Total Sum for Stage ${stage}: ${totalSum}`;
+}
+
+stageSelect.addEventListener('change', () => {
+    const stage = stageSelect.value;
+    processContainer.style.display = 'block';
+    processTypeContainer.style.display = 'none';
+    processCountInput.value = '1';
+    processTypesContainer.innerHTML = '';
+    //document.getElementById('totalSum').textContent = `Total Sum for Stage ${stage}: ${localStorage.getItem(`totalForStage${stage}`) || 0}`;
+});
+
+processCountInput.addEventListener('change', () => {
+    const processCount = parseInt(processCountInput.value, 10);
+    processTypesContainer.innerHTML = '';
+
+    for (let i = 0; i < processCount; i++) {
+        const processDiv = document.createElement('div');
+        processDiv.style.display = 'flex';
+        processDiv.style.alignItems = 'center';
+        processDiv.style.justifyContent = 'space-between';
+
+        const processTypeSelect = document.createElement('select');
+        processTypeSelect.name = `processType${i}`;
+        processTypeSelect.id = `processType${i}`;
+        processTypeSelect.innerHTML = `
+        <option value="control_move">Control Move</option>
+        <option value="general_move">General Move</option>
+        <option value="tool_use">Tool Use</option>
+        `;
+
+        const processButton = document.createElement('button');
+        processButton.textContent = 'Calculate';
+        processButton.style.marginLeft = '10px';
+
+        const resultSpan = document.createElement('span');
+        resultSpan.className = 'result';
+
+        processButton.addEventListener('click', () => {
+            const processType = processTypeSelect.value;
+            localStorage.setItem('currentProcessIndex', i);
+            localStorage.setItem('currentStage', stageSelect.value);
+
+            switch (processType) {
+                case 'control_move':
+                    window.location.href = 'control-move.html';
+                    break;
+                case 'general_move':
+                    window.location.href = 'general-move.html';
+                    break;
+                case 'tool_use':
+                    window.location.href = 'tool-use.html';
+                    break;
+            }
+        });
+
+        resultSpan.textContent = localStorage.getItem(`result${stageSelect.value}_${i}`) || 0;
+        processDiv.appendChild(processTypeSelect);
+        processDiv.appendChild(processButton);
+        processDiv.appendChild(resultSpan);
+        processTypesContainer.appendChild(processDiv);
+    }
+
+    
+
+    processTypeContainer.style.display = 'block';
+    updateTotal(stageSelect.value);
+});
+
+function initializeTableValues() {
+    for (let i = 1; i <= 4; i++) {
+        document.getElementById(`totalForStage${i}`).textContent = localStorage.getItem(`totalForStage${i}`) || 0;
+    }
+}
+    initializeTableValues();
+
+    </script>
+</body>
+
+</html>

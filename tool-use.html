@@ -40,12 +40,31 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
+    input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
   </style>
 </head>
 <body>
   <div class="container">
 
     <h2>Tool Use</h2>
+
+    <h3>Input Rf and Cf</h3>
+        <form id="inputForm">
+          <label for="rf">Enter Rf:</label>
+          <input type="text" id="rf" required placeholder="Enter Rf">
+          
+          <label for="cf">Enter Cf:</label>
+          <input type="text" id="cf" required placeholder="Enter Cf">
+        </form>
+
     <h3>ABG</h3>
     <form id="sumForm">
       <label for="a">Enter number A:</label>
@@ -83,6 +102,8 @@
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
+        <option value="10">10</option>
+        
       </select>
 
       <label for="g">Enter number G:</label>
@@ -132,6 +153,7 @@
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
+        <option value="10">10</option>
       </select>
 
       <label for="p">Enter number P:</label>
@@ -193,11 +215,13 @@
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
+        <option value="10">10</option>
       </select>
 
       <label for="p2">Enter number P:</label>
       <select id="p2" required>
         <option value="" disabled selected>Select P</option>
+        <option value="0">0</option>
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -246,6 +270,10 @@
   <script>
 
     function calculateFinalSum() {
+
+      var rf = parseFloat(document.getElementById("rf").value);
+      var cf = parseFloat(document.getElementById("cf").value);
+
       var a = parseFloat(document.getElementById("a").value);
       var b = parseFloat(document.getElementById("b").value);
       var g = parseFloat(document.getElementById("g").value);
@@ -262,8 +290,16 @@
 
       var a4 = parseFloat(document.getElementById("a4").value);
 
+      if (isNaN(rf)) {
+        rf = 1;
+      }
+
+      if (isNaN(cf)) {
+        cf = 1;
+      }
+
       if (!isNaN(a) && !isNaN(b) && !isNaN(g) && !isNaN(a2) && !isNaN(b2) && !isNaN(p) && !isNaN(u) && !isNaN(a3) && !isNaN(b3) && !isNaN(p2) && !isNaN(a4)) {
-        var sum = (10 * a) + (10 * b) + (10 * g) + (10 * a2) + (10 * b2) + (10 * p) + (10 * u) + (10 * a3) + (10 * b3) + (10 * p2) + (10 * a4);
+        var sum = cf * ((10 * a) + (10 * b) + (10 * g) + (10 * a2) + (10 * b2) + (10 * p) + (rf * 10 * u) + (10 * a3) + (10 * b3) + (10 * p2) + (10 * a4));
         document.getElementById("result").textContent = sum;
       } else {
         alert("Please enter valid numbers for input.");
@@ -274,6 +310,19 @@
 
       document.getElementById("time").textContent = time;
       document.getElementById("standardTime").textContent = standardTime.toFixed(4);
+
+      // Example calculation
+      let result = standardTime.toFixed(4);;  // Do the necessary calculation here
+
+      // Get the current stage and process index from localStorage
+      const currentProcessIndex = localStorage.getItem('currentProcessIndex');
+      const currentStage = localStorage.getItem('currentStage');
+
+      // Store the result in localStorage
+      localStorage.setItem(`result${currentStage}_${currentProcessIndex}`, result);
+
+      // Redirect back to the main page
+      window.location.href = 'testingbutton2.html';
 
 
     }

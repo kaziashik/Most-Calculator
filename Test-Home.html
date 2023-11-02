@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Stage Calculator</title>
+  <title>Most Calculator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -102,13 +102,13 @@
 
     const processCountInputs = document.querySelectorAll('input[type="number"]');
     processCountInputs.forEach((input) => {
-      input.addEventListener('input', () => {
+
+      input.addEventListener('mouseup', () => {
         const stageNumber = input.id.replace('processCount', '');
         const processTypesContainer = document.getElementById(`processTypes${stageNumber}`);
-        processTypesContainer.innerHTML = ''; // Clear existing process types
-
         const processCount = parseInt(input.value, 10);
-        for (let i = 1; i <= processCount; i++) {
+        processTypesContainer.innerHTML = ''; // Clear existing process types
+        for (let i = 0; i < processCount; i++) {
           const processTypeSelect = document.createElement('select');
           processTypeSelect.name = `processType${i}`;
           processTypeSelect.innerHTML = `
@@ -118,6 +118,7 @@
           `;
           processTypesContainer.appendChild(processTypeSelect);
         }
+
       });
     });
   </script>
