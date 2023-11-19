@@ -229,8 +229,12 @@
       // Store the result in localStorage
       localStorage.setItem(`result${currentStage}_${currentProcessIndex}`, result);
 
+      //sessionStorage.setItem('calculationCompleted', 'true');
+
       // Redirect back to the main page
-      window.location.href = 'testingbutton2.html';
+      window.location.href = 'testingbutton2.html?calculationCompleted=true';
+
+
 
     }
 

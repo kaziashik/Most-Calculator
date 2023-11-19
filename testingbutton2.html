@@ -57,15 +57,16 @@ th {
 }
 
     </style>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
 </head>
 
 <body>
     <div class="container">
-        <h1>Stage Calculator</h1>
+        <h1>Most Calculator</h1>
 
         <label for="stage">Select Stage:</label>
         <select id="stage">
+            <option value="" disabled selected>Please select the stage</option>
             <option value="1">Stage 1</option>
             <option value="2">Stage 2</option>
             <option value="3">Stage 3</option>
@@ -109,14 +110,17 @@ th {
                 </tr>
             </tbody>
         </table>
+
+        <button id="resetButton">Reset</button>
     </div>
 
-    <script>
-        const stageSelect = document.getElementById('stage');
-const processContainer = document.getElementById('process-container');
-const processTypeContainer = document.getElementById('process-type-container');
-const processCountInput = document.getElementById('processCount');
-const processTypesContainer = document.getElementById('processTypes');
+<script>
+    const stageSelect = document.getElementById('stage');
+    const processContainer = document.getElementById('process-container');
+    const processTypeContainer = document.getElementById('process-type-container');
+    const processCountInput = document.getElementById('processCount');
+    const processTypesContainer = document.getElementById('processTypes');
+
 
 function updateTotal(stage) {
     const results = Array.from(document.querySelectorAll('.result'));
@@ -127,22 +131,26 @@ function updateTotal(stage) {
     document.getElementById(`totalForStage${stage}`).textContent = totalSum;
 
     // If you want to also display the total sum in the previous <p> element, you can uncomment the line below
-    // document.getElementById('totalSum').textContent = `Total Sum for Stage ${stage}: ${totalSum}`;
+     document.getElementById('totalSum').textContent = `Total Sum for Stage ${stage}: ${totalSum}`;
 }
 
 stageSelect.addEventListener('change', () => {
     const stage = stageSelect.value;
-    processContainer.style.display = 'block';
-    processTypeContainer.style.display = 'none';
-    processCountInput.value = '1';
-    processTypesContainer.innerHTML = '';
-    //document.getElementById('totalSum').textContent = `Total Sum for Stage ${stage}: ${localStorage.getItem(`totalForStage${stage}`) || 0}`;
+    if (stage !== "") { // Check if a valid stage is selected
+        processContainer.style.display = 'block';
+        processCountInput.value = '0'; // Reset process count input
+        processTypesContainer.innerHTML = ''; // Clear previous process types
+    } else {
+        processContainer.style.display = 'none'; // Hide if no valid stage is selected
+        processTypeContainer.style.display = 'none';
+    }
 });
 
 processCountInput.addEventListener('change', () => {
     const processCount = parseInt(processCountInput.value, 10);
     processTypesContainer.innerHTML = '';
 
+    if (processCount > 0) {
     for (let i = 0; i < processCount; i++) {
         const processDiv = document.createElement('div');
         processDiv.style.display = 'flex';
@@ -164,6 +172,7 @@ processCountInput.addEventListener('change', () => {
 
         const resultSpan = document.createElement('span');
         resultSpan.className = 'result';
+        resultSpan.id = `resultSpan${i}`;
 
         processButton.addEventListener('click', () => {
             const processType = processTypeSelect.value;
@@ -189,11 +198,14 @@ processCountInput.addEventListener('change', () => {
         processDiv.appendChild(resultSpan);
         processTypesContainer.appendChild(processDiv);
     }
-
-    
-
     processTypeContainer.style.display = 'block';
-    updateTotal(stageSelect.value);
+        updateTotal(stageSelect.value);
+} else {
+    processTypeContainer.style.display = 'none';
+}
+
+refreshResults();
+
 });
 
 function initializeTableValues() {
@@ -201,7 +213,87 @@ function initializeTableValues() {
         document.getElementById(`totalForStage${i}`).textContent = localStorage.getItem(`totalForStage${i}`) || 0;
     }
 }
+     initializeTableValues();
+
+    function resetValues() {
+    // Reset totals for each stage
+    for(let i = 1; i <= 4; i++) {
+        localStorage.setItem(`totalForStage${i}`, 0);
+        document.getElementById(`totalForStage${i}`).textContent = '0';
+    }
+
+    // Reset other values in local storage
+    Object.keys(localStorage).forEach(key => {
+        if(key.startsWith('totalForStage') || key.startsWith('result')) {
+            localStorage.setItem(key, 0);
+        }
+    });
+
+    // Reset UI components if needed
+    // For example, reset process count, process types, etc.
+    processCountInput.value = '0';
+    processTypesContainer.innerHTML = '';
+    processTypeContainer.style.display = 'none';
+}
+
+function refreshResults() {
+    let stage = stageSelect.value;
+    let processCount = parseInt(processCountInput.value, 10);
+
+    for (let i = 0; i < processCount; i++) {
+        let result = localStorage.getItem(`result${stage}_${i}`) || 0;
+        let resultSpan = document.getElementById(`resultSpan${i}`);
+        if (resultSpan) {
+            resultSpan.textContent = result;
+        }
+    }
+
+    updateTotal(stage);
+}
+
+// function saveCurrentState() {
+//         // Save the current state of the application to localStorage
+//         localStorage.setItem('currentStage', stageSelect.value);
+//         localStorage.setItem('processCount', processCountInput.value);
+//         // Add more state properties as needed
+//     }
+
+//     function restoreState() {
+//         // Restore the state of the application from localStorage
+//         const savedStage = localStorage.getItem('currentStage');
+//         const savedProcessCount = localStorage.getItem('processCount');
+//         if (savedStage) {
+//             stageSelect.value = savedStage;
+//             processContainer.style.display = 'block';
+//         }
+//         if (savedProcessCount) {
+//             processCountInput.value = savedProcessCount;
+//             // Trigger any change events or updates needed for the process count
+//             processCountInput.dispatchEvent(new Event('change'));
+//         }
+//         // Restore more state properties as needed
+//     }
+
+//     // Call saveCurrentState() before navigating away
+//     document.querySelectorAll('a.navigate-away').forEach(link => {
+//         link.addEventListener('click', saveCurrentState);
+//     });
+
+window.onload = function() {
+    
+
+    // restoreState(); 
+    
+    // Check if the query parameter is present
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('calculationCompleted') === 'true') {
+        refreshResults();
+    }
+
     initializeTableValues();
+};
+
+document.getElementById('resetButton').addEventListener('click', resetValues);
 
     </script>
 </body>
