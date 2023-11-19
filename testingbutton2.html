@@ -173,6 +173,7 @@ processCountInput.addEventListener('change', () => {
         const resultSpan = document.createElement('span');
         resultSpan.className = 'result';
         resultSpan.id = `resultSpan${i}`;
+        resultSpan.style.marginLeft = '10px';
 
         processButton.addEventListener('click', () => {
             const processType = processTypeSelect.value;
@@ -281,16 +282,16 @@ function refreshResults() {
 
 window.onload = function() {
     
-
     // restoreState(); 
     
     // Check if the query parameter is present
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('calculationCompleted') === 'true') {
-        refreshResults();
-    }
-
+    // const urlParams = new URLSearchParams(window.location.search);
+    // if (urlParams.get('calculationCompleted') === 'true') {
+    //     refreshResults();
+    // }
+    
     initializeTableValues();
+    refreshResults();
 };
 
 document.getElementById('resetButton').addEventListener('click', resetValues);
