@@ -191,6 +191,8 @@ processCountInput.addEventListener('change', () => {
                     window.location.href = 'tool-use.html';
                     break;
             }
+
+            saveCurrentState();
         });
 
         resultSpan.textContent = localStorage.getItem(`result${stageSelect.value}_${i}`) || 0;
@@ -239,6 +241,7 @@ function initializeTableValues() {
 
 function refreshResults() {
     let stage = stageSelect.value;
+    // let stage = localStorage.getItem('currentStages');
     let processCount = parseInt(processCountInput.value, 10);
 
     for (let i = 0; i < processCount; i++) {
@@ -252,33 +255,37 @@ function refreshResults() {
     updateTotal(stage);
 }
 
-// function saveCurrentState() {
-//         // Save the current state of the application to localStorage
-//         localStorage.setItem('currentStage', stageSelect.value);
-//         localStorage.setItem('processCount', processCountInput.value);
-//         // Add more state properties as needed
-//     }
+function saveCurrentState() {
+    // Save the current stage and process count
+    localStorage.setItem('currentStage', stageSelect.value);
+    localStorage.setItem('processCount', processCountInput.value);
 
-//     function restoreState() {
-//         // Restore the state of the application from localStorage
-//         const savedStage = localStorage.getItem('currentStage');
-//         const savedProcessCount = localStorage.getItem('processCount');
-//         if (savedStage) {
-//             stageSelect.value = savedStage;
-//             processContainer.style.display = 'block';
-//         }
-//         if (savedProcessCount) {
-//             processCountInput.value = savedProcessCount;
-//             // Trigger any change events or updates needed for the process count
-//             processCountInput.dispatchEvent(new Event('change'));
-//         }
-//         // Restore more state properties as needed
-//     }
+    // Save the state for each process
+    for (let i = 0; i < parseInt(processCountInput.value, 10); i++) {
+        const processTypeSelect = document.getElementById(`processType${i}`);
+        localStorage.setItem(`processType${i}`, processTypeSelect.value);
+    }
+}
 
-//     // Call saveCurrentState() before navigating away
-//     document.querySelectorAll('a.navigate-away').forEach(link => {
-//         link.addEventListener('click', saveCurrentState);
-//     });
+function restoreState() {
+    const savedStage = localStorage.getItem('currentStage');
+    const savedProcessCount = localStorage.getItem('processCount');
+
+    if (savedStage) {
+        stageSelect.value = savedStage;
+        processContainer.style.display = 'block';
+    }
+
+    if (savedProcessCount) {
+        processCountInput.value = savedProcessCount;
+        processCountInput.dispatchEvent(new Event('change')); // Trigger change event
+
+        for (let i = 0; i < parseInt(savedProcessCount, 10); i++) {
+            const processTypeSelect = document.getElementById(`processType${i}`);
+            processTypeSelect.value = localStorage.getItem(`processType${i}`);
+        }
+    }
+}
 
 window.onload = function() {
     
@@ -289,7 +296,7 @@ window.onload = function() {
     // if (urlParams.get('calculationCompleted') === 'true') {
     //     refreshResults();
     // }
-    
+    restoreState();
     initializeTableValues();
     refreshResults();
 };

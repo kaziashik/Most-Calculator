@@ -192,8 +192,6 @@
   <script>
     function calculateFinalSum() {
 
-      
-
       var a = parseFloat(document.getElementById("a").value);
       var b = parseFloat(document.getElementById("b").value);
       var g = parseFloat(document.getElementById("g").value);
@@ -203,8 +201,6 @@
       var i = parseFloat(document.getElementById("i").value);
 
       var a2 = parseFloat(document.getElementById("a2").value);
-
-      
 
       if (!isNaN(a) && !isNaN(b) && !isNaN(g) && !isNaN(m) && !isNaN(x) && !isNaN(i) && !isNaN(a2)) {
         var sum = (10 * a) + (10 * b) + (10 * g) + (10 * m) + (10 * x) + (10 * i) + (10 * a2);
@@ -226,16 +222,16 @@
       const currentProcessIndex = localStorage.getItem('currentProcessIndex');
       const currentStage = localStorage.getItem('currentStage');
 
+      // Store current stage in localStorage
+      // localStorage.setItem('currentStages', currentStage);
+
       // Store the result in localStorage
       localStorage.setItem(`result${currentStage}_${currentProcessIndex}`, result);
 
       //sessionStorage.setItem('calculationCompleted', 'true');
 
       // Redirect back to the main page
-      window.location.href = 'testingbutton2.html?calculationCompleted=true';
-
-
-
+      window.location.href = 'testingbutton2.html';
     }
 
   </script>
