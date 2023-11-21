@@ -58,6 +58,7 @@ th {
 
     </style>
     <!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -112,6 +113,9 @@ th {
         </table>
 
         <button id="resetButton">Reset</button>
+        <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+            <canvas id="myChart"></canvas>
+        </div>
     </div>
 
 <script>
@@ -237,6 +241,8 @@ function initializeTableValues() {
     processCountInput.value = '0';
     processTypesContainer.innerHTML = '';
     processTypeContainer.style.display = 'none';
+
+    generateBarChart();
 }
 
 function refreshResults() {
@@ -287,18 +293,67 @@ function restoreState() {
     }
 }
 
+function generateBarChart() {
+    const { labels, data } = extractDataFromTable();
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Total Sum',
+                data: data,
+                backgroundColor: [
+                'rgba(54, 162, 235, 0.5)'
+                ],
+                borderColor: [
+                'rgba(54, 162, 235, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+
+function extractDataFromTable() {
+    // Arrays to hold the labels (stage names) and data (total sums)
+    let labels = [];
+    let data = [];
+
+    // Select all rows in the tbody of the table
+    const tableRows = document.querySelectorAll('#totalsTable tbody tr');
+
+    // Loop through each row
+    tableRows.forEach(row => {
+        // The first cell (td) contains the stage name
+        const stageName = row.cells[0].innerText;
+        labels.push(stageName);
+
+        // The second cell (td) contains the total sum
+        const totalSum = row.cells[1].innerText;
+        data.push(parseFloat(totalSum)); // Convert the total sum to a number
+    });
+
+    // Return the extracted data
+    return { labels, data };
+}
+
 window.onload = function() {
     
-    // restoreState(); 
-    
-    // Check if the query parameter is present
-    // const urlParams = new URLSearchParams(window.location.search);
-    // if (urlParams.get('calculationCompleted') === 'true') {
-    //     refreshResults();
-    // }
+
     restoreState();
     initializeTableValues();
     refreshResults();
+    generateBarChart();
 };
 
 document.getElementById('resetButton').addEventListener('click', resetValues);
