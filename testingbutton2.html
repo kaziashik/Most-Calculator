@@ -38,27 +38,35 @@
         }
 
         select,
-input[type="number"],
-button {
-    box-sizing: border-box; /* Include padding and border in the width */
-    width: 100%; /* Full width */
-    padding: 10px; /* Consistent padding */
-    margin: 10px 0; /* Consistent margin */
-    border: 1px solid #ddd; /* Consistent border */
-    border-radius: 5px; /* Consistent border-radius */
-}
+        input[type="number"],
+        button {
+            box-sizing: border-box;
+            /* Include padding and border in the width */
+            width: 100%;
+            /* Full width */
+            padding: 10px;
+            /* Consistent padding */
+            margin: 10px 0;
+            /* Consistent margin */
+            border: 1px solid #ddd;
+            /* Consistent border */
+            border-radius: 5px;
+            /* Consistent border-radius */
+        }
 
-#stage,
-#processCount {
-    padding: 10px; /* Adjust as needed */
-    border: 1px solid #ddd; /* Adjust as needed */
-}
+        #stage,
+        #processCount {
+            padding: 10px;
+            /* Adjust as needed */
+            border: 1px solid #ddd;
+            /* Adjust as needed */
+        }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    /* -webkit-appearance: none; */
-    margin: 0;
-}
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            /* -webkit-appearance: none; */
+            margin: 0;
+        }
 
         table {
             width: 100%;
@@ -270,7 +278,7 @@ input[type="number"]::-webkit-outer-spin-button {
             processCountInput.value = '0';
             processTypesContainer.innerHTML = '';
             processTypeContainer.style.display = 'none';
-            
+
             location.reload();  // reload windows
 
             generateBarChart();
