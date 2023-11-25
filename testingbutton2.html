@@ -3,6 +3,8 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
     <title>Stage Calculator</title>
     <style>
         body {
@@ -94,6 +96,44 @@
             max-width: 100%;
             padding: 0 15px;
         }
+
+
+
+        table {
+                border-collapse: collapse;
+                width: 50%;
+                margin-top: 20px;
+            }
+    
+            th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+            }
+    
+            th {
+                background-color: #f2f2f2;
+            }
+    
+            td input {
+                width: 100%;
+            }
+            .button-container {
+            margin-top: 0px;
+            text-align: left;
+            border-collapse: collapse;
+            width: 50%;
+              
+        }
+
+        .button-container-general-infor {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            text-align: center;
+            border-collapse: collapse;
+            width: 50%;
+              
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -101,6 +141,68 @@
 <body>
     <div class="container">
         <h1>Most Calculator</h1>
+        <br>
+        <br>
+
+    </head>
+    <body>
+
+        <div>
+            <div class="button-container-general-infor">
+                <h3>General Information</h3>
+            </div>
+            
+        <table id="infoTable">
+            <tr>
+                <th>Process</th>
+                <td><input type="text" id="processInput"></td>
+            </tr>
+                <th>Equipment</th>
+                <td><input type="text" id="equipmentInput"></td>
+            </tr>
+
+            <tr>
+                <th>Product</th>
+                <td><input type="text" id="Product"></td>
+            </tr>
+
+            <tr>
+                <th>Lot Size</th>
+                <td><input type="text" id="LotSize"></td>
+            </tr>
+
+
+            <tr>
+                <th>UPH</th>
+                <td><input type="text" id="UPH"></td>
+            </tr>
+
+            <tr>
+                <th>OEE</th>
+                <td><input type="text" id="OEE"></td>
+            </tr>
+
+            <tr>
+                <th>Lot Cycle Time =(lot size)/(UPH *OEE)</th>
+                <td><input type="text" id="Product"></td>
+            </tr>
+
+        
+
+
+            <!-- Add more rows as needed -->
+        </table>
+    
+         <div class="button-container">
+            <button onclick="saveData()">Save Data</button>
+         </div>
+        </div>
+    <br>
+   <br>
+   <br>
+
+
+
 
         <label for="stage">Select Stage:</label>
         <select id="stage">
@@ -222,11 +324,11 @@
                         localStorage.setItem('currentStage', stageSelect.value);
 
                         switch (processType) {
-                            case 'control_move':
-                                window.location.href = 'control-move.html';
-                                break;
                             case 'general_move':
                                 window.location.href = 'general-move.html';
+                                break;
+                            case 'control_move':
+                                window.location.href = 'control-move.html';
                                 break;
                             case 'tool_use':
                                 window.location.href = 'tool-use.html';
@@ -397,6 +499,34 @@
         };
 
         document.getElementById('resetButton').addEventListener('click', resetValues);
+
+
+
+ // Function to save data to localStorage
+ function saveData() {
+            const inputFields = document.querySelectorAll('#infoTable input');
+            inputFields.forEach((input) => {
+                const fieldName = input.id;
+                const fieldValue = input.value;
+                localStorage.setItem(fieldName, fieldValue);
+            });
+
+            alert("Data saved successfully!");
+        }
+
+        // Function to load data from localStorage
+        function loadData() {
+            const inputFields = document.querySelectorAll('#infoTable input');
+            inputFields.forEach((input) => {
+                const fieldName = input.id;
+                const fieldValue = localStorage.getItem(fieldName) || "";
+                input.value = fieldValue;
+            });
+        }
+
+        // Load data on page load
+        loadData();
+
 
     </script>
 </body>
