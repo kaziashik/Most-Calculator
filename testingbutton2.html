@@ -28,10 +28,7 @@
             max-width: 600px;
         }
 
-
-
         @media (max-width: 600px) {
-
             .chart-container {
                 padding: 0;
             }
@@ -94,6 +91,13 @@
             max-width: 100%;
             padding: 0 15px;
         }
+
+        #resetButton {
+            background-color: #ff6666;
+            color: white;
+            font-weight: bolder;
+
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -149,10 +153,15 @@
             </tbody>
         </table>
 
+        <br>
         <button id="resetButton">Reset</button>
+        <br>
+
         <div class="chart-container" style="position: relative; height:40vh; width:80vw">
             <canvas id="myChart"></canvas>
         </div>
+
+
     </div>
 
     <script>
@@ -260,27 +269,31 @@
         initializeTableValues();
 
         function resetValues() {
-            // Reset totals for each stage
-            for (let i = 1; i <= 4; i++) {
-                localStorage.setItem(`totalForStage${i}`, 0);
-                document.getElementById(`totalForStage${i}`).textContent = '0';
-            }
+            // Clear all local storage for the current domain
+            localStorage.clear();
 
-            // Reset other values in local storage
-            Object.keys(localStorage).forEach(key => {
-                if (key.startsWith('totalForStage') || key.startsWith('result')) {
-                    localStorage.setItem(key, 0);
-                }
-            });
-
-            // Reset UI components if needed
-            // For example, reset process count, process types, etc.
+            // Reset process count to 1 or its default value
             processCountInput.value = '0';
+            // Trigger the change event for processCountInput to handle related updates
+            processCountInput.dispatchEvent(new Event('change'));
+
+            // Clear any dynamically added process types
             processTypesContainer.innerHTML = '';
+
+            // Hide the process type container
             processTypeContainer.style.display = 'none';
 
-            location.reload();  // reload windows
+            // Optionally, you could also clear the select elements if needed
+            // by iterating over them and setting them back to their default state
+            const selects = document.querySelectorAll('select');
+            selects.forEach(select => {
+                select.selectedIndex = 0;
+            });
 
+            // Optionally, clear results
+            document.getElementById('totalSum').textContent = '';
+
+            // Refresh the chart or any other related data on the page
             generateBarChart();
 
         }
