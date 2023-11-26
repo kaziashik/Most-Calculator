@@ -93,34 +93,6 @@
             padding: 0 15px;
         }
 
-
-        /* table {
-                border-collapse: collapse;
-                width: 50%;
-                margin-top: 20px;
-            }
-    
-            th, td {
-                border: 1px solid black;
-                padding: 8px;
-                text-align: left;
-            }
-    
-            th {
-                background-color: #f2f2f2;
-            }
-    
-            td input {
-                width: 100%;
-            }
-            .button-container {
-            margin-top: 0px;
-            text-align: left;
-            border-collapse: collapse;
-            width: 50%;
-              
-        } */
-
         .button-container-general-infor {
             margin-top: 0px;
             margin-bottom: 0px;
@@ -128,7 +100,7 @@
             border-collapse: collapse;
             width: 50%;
         }
-              
+
         #resetButton {
             background-color: #ff6666;
             color: white;
@@ -145,117 +117,118 @@
         <br>
         <br>
 
-    </head>
-    <body>
+        </head>
 
-        <div>
-            <div class="button-container-general-infor">
-                <h3>General Information</h3>
+        <body>
+
+            <div>
+                <div class="button-container-general-infor">
+                    <h3>General Information</h3>
+                </div>
+
+                <table id="infoTable">
+                    <tr>
+                        <th>Process</th>
+                        <td><input type="text" id="processInput"></td>
+                    </tr>
+                    <th>Equipment</th>
+                    <td><input type="text" id="equipmentInput"></td>
+                    </tr>
+
+                    <tr>
+                        <th>Product</th>
+                        <td><input type="text" id="Product"></td>
+                    </tr>
+
+                    <tr>
+                        <th>Lot Size</th>
+                        <td><input type="text" id="LotSize"></td>
+                    </tr>
+
+
+                    <tr>
+                        <th>UPH</th>
+                        <td><input type="text" id="UPH"></td>
+                    </tr>
+
+                    <tr>
+                        <th>OEE</th>
+                        <td><input type="text" id="OEE"></td>
+                    </tr>
+
+                    <tr>
+                        <th>Lot Cycle Time =(lot size)/(UPH *OEE)</th>
+                        <td><input type="text" id="Product"></td>
+                    </tr>
+
+
+
+
+                    <!-- Add more rows as needed -->
+                </table>
+
+                <div class="button-container">
+                    <button onclick="saveData()">Save Data</button>
+                </div>
             </div>
-            
-        <table id="infoTable">
-            <tr>
-                <th>Process</th>
-                <td><input type="text" id="processInput"></td>
-            </tr>
-                <th>Equipment</th>
-                <td><input type="text" id="equipmentInput"></td>
-            </tr>
+            <br>
+            <br>
+            <br>
 
-            <tr>
-                <th>Product</th>
-                <td><input type="text" id="Product"></td>
-            </tr>
+            <label for="stage">Select Stage:</label>
+            <select id="stage">
+                <option value="" disabled selected>Please select the stage</option>
+                <option value="1">Stage 1</option>
+                <option value="2">Stage 2</option>
+                <option value="3">Stage 3</option>
+                <option value="4">Stage 4</option>
+            </select>
 
-            <tr>
-                <th>Lot Size</th>
-                <td><input type="text" id="LotSize"></td>
-            </tr>
+            <div id="process-container" class="process-container">
+                <label for="processCount">How many processes do you want to calculate?</label>
+                <input type="number" id="processCount" min="1" value="1">
+            </div>
 
+            <div id="process-type-container" class="process-container">
+                <p>Choose the type for each process:</p>
+                <div id="processTypes"></div>
+            </div>
 
-            <tr>
-                <th>UPH</th>
-                <td><input type="text" id="UPH"></td>
-            </tr>
+            <p id="totalSum"></p>
+            <table id="totalsTable">
+                <thead>
+                    <tr>
+                        <th>Stage</th>
+                        <th>Total Sum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Stage 1</td>
+                        <td id="totalForStage1">0</td>
+                    </tr>
+                    <tr>
+                        <td>Stage 2</td>
+                        <td id="totalForStage2">0</td>
+                    </tr>
+                    <tr>
+                        <td>Stage 3</td>
+                        <td id="totalForStage3">0</td>
+                    </tr>
+                    <tr>
+                        <td>Stage 4</td>
+                        <td id="totalForStage4">0</td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <tr>
-                <th>OEE</th>
-                <td><input type="text" id="OEE"></td>
-            </tr>
+            <br>
+            <button id="resetButton">Reset</button>
+            <br>
 
-            <tr>
-                <th>Lot Cycle Time =(lot size)/(UPH *OEE)</th>
-                <td><input type="text" id="Product"></td>
-            </tr>
-
-        
-
-
-            <!-- Add more rows as needed -->
-        </table>
-    
-         <div class="button-container">
-            <button onclick="saveData()">Save Data</button>
-         </div>
-        </div>
-    <br>
-   <br>
-   <br>
-
-        <label for="stage">Select Stage:</label>
-        <select id="stage">
-            <option value="" disabled selected>Please select the stage</option>
-            <option value="1">Stage 1</option>
-            <option value="2">Stage 2</option>
-            <option value="3">Stage 3</option>
-            <option value="4">Stage 4</option>
-        </select>
-
-        <div id="process-container" class="process-container">
-            <label for="processCount">How many processes do you want to calculate?</label>
-            <input type="number" id="processCount" min="1" value="1">
-        </div>
-
-        <div id="process-type-container" class="process-container">
-            <p>Choose the type for each process:</p>
-            <div id="processTypes"></div>
-        </div>
-
-        <p id="totalSum"></p>
-        <table id="totalsTable">
-            <thead>
-                <tr>
-                    <th>Stage</th>
-                    <th>Total Sum</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Stage 1</td>
-                    <td id="totalForStage1">0</td>
-                </tr>
-                <tr>
-                    <td>Stage 2</td>
-                    <td id="totalForStage2">0</td>
-                </tr>
-                <tr>
-                    <td>Stage 3</td>
-                    <td id="totalForStage3">0</td>
-                </tr>
-                <tr>
-                    <td>Stage 4</td>
-                    <td id="totalForStage4">0</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <br>
-        <button id="resetButton">Reset</button>
-        <br>
-
-        <div class="chart-container" style="position: relative; height:40vh; width:80vw">
-            <canvas id="myChart"></canvas>
-        </div>
+            <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+                <canvas id="myChart"></canvas>
+            </div>
 
 
     </div>
@@ -267,18 +240,22 @@
         const processCountInput = document.getElementById('processCount');
         const processTypesContainer = document.getElementById('processTypes');
 
-
         function updateTotal(stage) {
             const results = Array.from(document.querySelectorAll('.result'));
-            let totalSum = results.reduce((acc, result) => acc + parseFloat(result.textContent), 0);
+            let totalSum = results.reduce((acc, result) => acc + parseFloat(result.textContent || 0), 0);
             localStorage.setItem(`totalForStage${stage}`, totalSum);
 
-            // Update table cell for the specific stage
-            document.getElementById(`totalForStage${stage}`).textContent = totalSum;
+            const totalElement = document.getElementById(`totalForStage${stage}`);
+            if (totalElement) {
+                totalElement.textContent = totalSum;
+            } else {
+                console.error(`Element with ID totalForStage${stage} not found.`);
+            }
 
-            // If you want to also display the total sum in the previous <p> element, you can uncomment the line below
+            // Optionally display the total sum in the previous <p> element
             document.getElementById('totalSum').textContent = `Total Sum for Stage ${stage}: ${totalSum}`;
         }
+
 
         stageSelect.addEventListener('change', () => {
             const stage = stageSelect.value;
@@ -392,6 +369,9 @@
             // Refresh the chart or any other related data on the page
             generateBarChart();
 
+            // console.log("Reset button clicked. Reloading page...");
+            // location.reload();
+
         }
 
         function refreshResults() {
@@ -443,38 +423,44 @@
         }
 
         function generateBarChart() {
+            // Extract data from the table
             const { labels, data } = extractDataFromTable();
 
-            const ctx = document.getElementById('myChart').getContext('2d');
-            const myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Total Sum',
-                        data: data,
-                        backgroundColor: [
-                            'rgba(54, 162, 235, 0.5)'
-                        ],
-                        borderColor: [
-                            'rgba(54, 162, 235, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
+            // Check if data is available
+            if (labels.length > 0 && data.length > 0) {
+
+                // Destroy existing chart instance if it exists
+                // if (myChartInstance) {
+                //     myChartInstance.destroy();
+                // }
+
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Sum',
+                            data: data,
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
                         }
                     }
-                }
-            });
+                });
+            } else {
+                console.log("No data available to generate chart");
+            }
         }
-
-
         function extractDataFromTable() {
             // Arrays to hold the labels (stage names) and data (total sums)
             let labels = [];
@@ -498,6 +484,8 @@
             return { labels, data };
         }
 
+        document.getElementById('resetButton').addEventListener('click', resetValues);
+
         window.onload = function () {
             restoreState();
             initializeTableValues();
@@ -505,12 +493,12 @@
             generateBarChart();
         };
 
-        document.getElementById('resetButton').addEventListener('click', resetValues);
 
 
 
- // Function to save data to localStorage
- function saveData() {
+
+        // Function to save data to localStorage
+        function saveData() {
             const inputFields = document.querySelectorAll('#infoTable input');
             inputFields.forEach((input) => {
                 const fieldName = input.id;

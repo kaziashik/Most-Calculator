@@ -59,6 +59,24 @@
         padding: 8px;
       }
     }
+
+    select,
+        input[type="number"],
+        button {
+            box-sizing: border-box;
+            /* Include padding and border in the width */
+            width: 100%;
+            /* Full width */
+            padding: 10px;
+            /* Consistent padding */
+            margin: 10px 0;
+            /* Consistent margin */
+            border: 1px solid #ddd;
+            /* Consistent border */
+            border-radius: 5px;
+            /* Consistent border-radius */
+        }
+    
   </style>
 </head>
 <body>
@@ -204,10 +222,10 @@
     <h3>Input Rf and Cf</h3>
         <form id="inputForm">
           <label for="rf">Enter Rf:</label>
-          <input type="text" id="rf" required placeholder="Enter Rf">
+          <input type="number" id="rf" required placeholder="Enter Rf">
           
           <label for="cf">Enter Cf:</label>
-          <input type="text" id="cf" required placeholder="Enter Cf">
+          <input type="number" id="cf" required placeholder="Enter Cf">
         </form>
         <br>
 
