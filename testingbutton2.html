@@ -230,6 +230,52 @@
             </div>
 
 
+            <br>
+            <br>
+
+
+            <h2>Compare the sum of OTIDS in every stage.</h2>
+
+  <table>
+    <tr>
+      <th>Classification Time (TMU)</th>
+      <th>STAGE 1</th>
+      <th>STAGE 2</th>
+      <th>STAGE 3</th>
+      <th>STAGE 4</th>
+    </tr>
+    <tr>
+      <th>TRANSPORTATION</th>
+      <td>350</td>
+      <td>350</td>
+      <td>2350</td>
+      <td>2030</td>
+    </tr>
+    <tr>
+      <th>INSPECTION</th>
+      <td>4500</td>
+      <td>4500</td>
+      <td>2030</td>
+      <td>2350</td>
+    </tr>
+    <tr>
+      <th>DELAY</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>STORAGE</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </table>
+
+
+
     </div>
 
     <script>
@@ -283,8 +329,8 @@
                     processTypeSelect.name = `processType${i}`;
                     processTypeSelect.id = `processType${i}`;
                     processTypeSelect.innerHTML = `
-        <option value="control_move">Control Move</option>
         <option value="general_move">General Move</option>
+        <option value="control_move">Control Move</option>
         <option value="tool_use">Tool Use</option>
         `;
 
