@@ -108,6 +108,7 @@
             background-color: #50C878;
             color: white;
             font-weight: bolder;
+            width: 25%;
         }
 
         #resetButton {
@@ -171,7 +172,7 @@
 
                     <!-- Add more rows as needed -->
                 </table>
-
+                <br>
                 
                     <button onclick="saveData()" class="button-container">Save Data</button>
                 
@@ -343,6 +344,9 @@
                     const processButton = document.createElement('button');
                     processButton.textContent = 'Calculate';
                     processButton.style.marginLeft = '10px';
+                    processButton.style.backgroundColor = '#4169E1';
+                    processButton.style.color = '#FFFFFF';
+                    processButton.style.fontWeight = 'bolder';
 
                     const resultSpan = document.createElement('span');
                     resultSpan.className = 'result';
