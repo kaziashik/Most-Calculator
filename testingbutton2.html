@@ -9,6 +9,7 @@
         h3 {
             text-align: start;
         }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
@@ -173,9 +174,9 @@
                     <!-- Add more rows as needed -->
                 </table>
                 <br>
-                
-                    <button onclick="saveData()" class="button-container">Save Data</button>
-                
+
+                <button onclick="saveData()" class="button-container">Save Data</button>
+
             </div>
             <br>
             <br>
@@ -236,53 +237,56 @@
                 <canvas id="myChart"></canvas>
             </div>
 
-
-            <br>
-            <br>
-
-
             <h2>Compare the sum of OTIDS in every stage.</h2>
 
-  <table>
-    <tr>
-      <th>Classification Time (TMU)</th>
-      <th>STAGE 1</th>
-      <th>STAGE 2</th>
-      <th>STAGE 3</th>
-      <th>STAGE 4</th>
-    </tr>
-    <tr>
-      <th>TRANSPORTATION</th>
-      <td>350</td>
-      <td>350</td>
-      <td>2350</td>
-      <td>2030</td>
-    </tr>
-    <tr>
-      <th>INSPECTION</th>
-      <td>4500</td>
-      <td>4500</td>
-      <td>2030</td>
-      <td>2350</td>
-    </tr>
-    <tr>
-      <th>DELAY</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>STORAGE</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-  </table>
-
-
-
+            <table id="totalOTIDSTable">
+                <thead>
+                    <tr>
+                        <th>Classification Time (TMU)</th>
+                        <th>STAGE 1</th>
+                        <th>STAGE 2</th>
+                        <th>STAGE 3</th>
+                        <th>STAGE 4</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>OPERATIONAL</td>
+                        <td id="totalOperationalStage1">0</td>
+                        <td id="totalOperationalStage2">0</td>
+                        <td id="totalOperationalStage3">0</td>
+                        <td id="totalOperationalStage4">0</td>
+                    </tr>
+                    <tr>
+                        <td>TRANSPORTATION</td>
+                        <td id="totalTransportationStage1">0</td>
+                        <td id="totalTransportationStage2">0</td>
+                        <td id="totalTransportationStage3">0</td>
+                        <td id="totalTransportationStage4">0</td>
+                    </tr>
+                    <tr>
+                        <td>INSPECTION</td>
+                        <td id="totalInspectionStage1">0</td>
+                        <td id="totalInspectionStage2">0</td>
+                        <td id="totalInspectionStage3">0</td>
+                        <td id="totalInspectionStage4">0</td>
+                    </tr>
+                    <tr>
+                        <td>DELAY</td>
+                        <td id="totalDelayStage1">0</td>
+                        <td id="totalDelayStage2">0</td>
+                        <td id="totalDelayStage3">0</td>
+                        <td id="totalDelayStage4">0</td>
+                    </tr>
+                    <tr>
+                        <td>STORAGE</td>
+                        <td id="totalStorageStage1">0</td>
+                        <td id="totalStorageStage2">0</td>
+                        <td id="totalStorageStage3">0</td>
+                        <td id="totalStorageStage4">0</td>
+                    </tr>
+                </tbody>
+            </table>
     </div>
 
     <script>
@@ -546,11 +550,30 @@
             initializeTableValues();
             refreshResults();
             generateBarChart();
+            updateOTIDSTable();
         };
 
+        function sumOperationTransportationForStage(stage) {
+            let operationSum = 0;
+            let transportationSum = 0;
+            const processCount = parseInt(localStorage.getItem('processCount') || '0');
+            for (let i = 0; i < processCount; i++) {
+                operationSum += parseFloat(localStorage.getItem(`operation${stage}_${i}`) || '0');
+                transportationSum += parseFloat(localStorage.getItem(`transportation${stage}_${i}`) || '0');
+            }
+            return { operationSum, transportationSum };
+        }
 
+        //update OTIDS Table
+        function updateOTIDSTable() {
+            for (let stage = 1; stage <= 4; stage++) {
+                const operationSum = parseFloat(localStorage.getItem(`operationStage${stage}`) || 0);
+                const transportationSum = parseFloat(localStorage.getItem(`transportationStage${stage}`) || 0);
 
-
+                document.getElementById(`totalOperationalStage${stage}`).textContent = operationSum;
+                document.getElementById(`totalTransportationStage${stage}`).textContent = transportationSum;
+            }
+        }
 
         // Function to save data to localStorage
         function saveData() {

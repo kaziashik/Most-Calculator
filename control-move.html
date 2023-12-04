@@ -225,9 +225,6 @@
         </form>
         <br>
 
-
-        <!-- Classification Time (TMU) -->
-
     <h3>Classification Time (TMU)</h3>
     <form id="inputForm2">
       <label for="Operation">Operation:</label>
@@ -301,6 +298,18 @@
 
       // Store current stage in localStorage
       // localStorage.setItem('currentStages', currentStage);
+
+      // Operation and Transportation
+      
+      const operationValue = parseFloat(document.getElementById('Operation').value) || 0;
+      const transportationValue = parseFloat(document.getElementById('Transportation').value) || 0;
+
+      // Add to the existing values in localStorage
+      const currentOperationSum = parseFloat(localStorage.getItem(`operationStage${currentStage}`) || 0);
+      const currentTransportationSum = parseFloat(localStorage.getItem(`transportationStage${currentStage}`) || 0);
+
+      localStorage.setItem(`operationStage${currentStage}`, currentOperationSum + operationValue);
+      localStorage.setItem(`transportationStage${currentStage}`, currentTransportationSum + transportationValue);
 
       // Store the result in localStorage
       localStorage.setItem(`result${currentStage}_${currentProcessIndex}`, result);
