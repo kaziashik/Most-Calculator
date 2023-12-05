@@ -287,10 +287,10 @@
       var standardTime = time * (1 + 0.15);
 
       document.getElementById("time").textContent = time;
-      document.getElementById("standardTime").textContent = standardTime.toFixed(4);
+      document.getElementById("standardTime").textContent = standardTime.toFixed(7);
 
       // Example calculation
-      let result = standardTime.toFixed(4);;  // Do the necessary calculation here
+      let result = standardTime.toFixed(7);;  // Do the necessary calculation here
 
       // Get the current stage and process index from localStorage
       const currentProcessIndex = localStorage.getItem('currentProcessIndex');
