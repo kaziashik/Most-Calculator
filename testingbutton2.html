@@ -303,13 +303,13 @@
 
             const totalElement = document.getElementById(`totalForStage${stage}`);
             if (totalElement) {
-                totalElement.textContent = totalSum;
+                totalElement.textContent = totalSum.toFixed(2);
             } else {
                 console.error(`Element with ID totalForStage${stage} not found.`);
             }
 
             // Optionally display the total sum in the previous <p> element
-            document.getElementById('totalSum').textContent = `Total Sum for Stage ${stage}: ${totalSum}`;
+            document.getElementById('totalSum').textContent = `Total Sum for Stage ${stage}: ${totalSum.toFixed(2)}`;
         }
 
 
