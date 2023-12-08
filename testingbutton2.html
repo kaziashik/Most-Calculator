@@ -395,8 +395,12 @@
 
         function initializeTableValues() {
             for (let i = 1; i <= 4; i++) {
-                document.getElementById(`totalForStage${i}`).textContent = localStorage.getItem(`totalForStage${i}`) || 0;
-            }
+    let storedValue = localStorage.getItem(`totalForStage${i}`);
+    let displayedValue = parseFloat(storedValue) || 0;
+    displayedValue = displayedValue.toFixed(2);
+
+    document.getElementById(`totalForStage${i}`).textContent = displayedValue;
+  }
         }
         initializeTableValues();
 
