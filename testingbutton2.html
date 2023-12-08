@@ -395,47 +395,51 @@
 
         function initializeTableValues() {
             for (let i = 1; i <= 4; i++) {
-    let storedValue = localStorage.getItem(`totalForStage${i}`);
-    let displayedValue = parseFloat(storedValue) || 0;
-    displayedValue = displayedValue.toFixed(2);
+                let storedValue = localStorage.getItem(`totalForStage${i}`);
+                let displayedValue = parseFloat(storedValue) || 0;
+                displayedValue = displayedValue.toFixed(2);
 
-    document.getElementById(`totalForStage${i}`).textContent = displayedValue;
-  }
+                document.getElementById(`totalForStage${i}`).textContent = displayedValue;
+            }
         }
         initializeTableValues();
 
         function resetValues() {
-            // Clear all local storage for the current domain
-            localStorage.clear();
+            const userConfirmed = confirm("Are you sure you want to reset your data? Pressing OK will remove all data. This action cannot be undone.");
 
-            // Reset process count to 1 or its default value
-            processCountInput.value = '0';
-            // Trigger the change event for processCountInput to handle related updates
-            processCountInput.dispatchEvent(new Event('change'));
+            if (userConfirmed) {
+                // Clear all local storage for the current domain
+                localStorage.clear();
 
-            // Clear any dynamically added process types
-            processTypesContainer.innerHTML = '';
+                // Reset process count to 1 or its default value
+                processCountInput.value = '0';
+                // Trigger the change event for processCountInput to handle related updates
+                processCountInput.dispatchEvent(new Event('change'));
 
-            // Hide the process type container
-            processTypeContainer.style.display = 'none';
+                // Clear any dynamically added process types
+                processTypesContainer.innerHTML = '';
 
-            // Optionally, you could also clear the select elements if needed
-            // by iterating over them and setting them back to their default state
-            const selects = document.querySelectorAll('select');
-            selects.forEach(select => {
-                select.selectedIndex = 0;
-            });
+                // Hide the process type container
+                processTypeContainer.style.display = 'none';
 
-            // Optionally, clear results
-            document.getElementById('totalSum').textContent = '';
+                // Optionally, you could also clear the select elements if needed
+                // by iterating over them and setting them back to their default state
+                const selects = document.querySelectorAll('select');
+                selects.forEach(select => {
+                    select.selectedIndex = 0;
+                });
 
-            // Refresh the chart or any other related data on the page
-            generateBarChart();
+                // Optionally, clear results
+                document.getElementById('totalSum').textContent = '';
 
-            // console.log("Reset button clicked. Reloading page...");
-            // location.reload();
-
+                // Refresh the chart or any other related data on the page
+                location.reload();
+            } else {
+               
+                alert("Reset canceled. Your data remains unchanged.");
+            }
         }
+
 
         function refreshResults() {
             let stage = stageSelect.value;
