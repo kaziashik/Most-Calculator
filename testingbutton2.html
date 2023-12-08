@@ -120,6 +120,8 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -404,40 +406,47 @@
         }
         initializeTableValues();
 
-        function resetValues() {
-            const userConfirmed = confirm("Are you sure you want to reset your data? Pressing OK will remove all data. This action cannot be undone.");
+        function resetValues() { // Display a confirmation dialog using SweetAlert2
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Pressing OK will remove all data. This action cannot be undone.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "OK",
+                cancelButtonText: "Cancel",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Clear all local storage for the current domain
+                    localStorage.clear();
 
-            if (userConfirmed) {
-                // Clear all local storage for the current domain
-                localStorage.clear();
+                    // Reset process count to 1 or its default value
+                    processCountInput.value = '0';
+                    // Trigger the change event for processCountInput to handle related updates
+                    processCountInput.dispatchEvent(new Event('change'));
 
-                // Reset process count to 1 or its default value
-                processCountInput.value = '0';
-                // Trigger the change event for processCountInput to handle related updates
-                processCountInput.dispatchEvent(new Event('change'));
+                    // Clear any dynamically added process types
+                    processTypesContainer.innerHTML = '';
 
-                // Clear any dynamically added process types
-                processTypesContainer.innerHTML = '';
+                    // Hide the process type container
+                    processTypeContainer.style.display = 'none';
 
-                // Hide the process type container
-                processTypeContainer.style.display = 'none';
+                    // Optionally, you could also clear the select elements if needed
+                    // by iterating over them and setting them back to their default state
+                    const selects = document.querySelectorAll('select');
+                    selects.forEach(select => {
+                        select.selectedIndex = 0;
+                    });
 
-                // Optionally, you could also clear the select elements if needed
-                // by iterating over them and setting them back to their default state
-                const selects = document.querySelectorAll('select');
-                selects.forEach(select => {
-                    select.selectedIndex = 0;
-                });
+                    // Optionally, clear results
+                    document.getElementById('totalSum').textContent = '';
 
-                // Optionally, clear results
-                document.getElementById('totalSum').textContent = '';
-
-                // Refresh the chart or any other related data on the page
-                location.reload();
-            } else {
-               
-                alert("Reset canceled. Your data remains unchanged.");
-            }
+                    // Refresh the chart or any other related data on the page
+                    location.reload();
+                } else {
+                    // Inform the user that the reset was canceled
+                    Swal.fire("Canceled", "Reset canceled. Your data remains unchanged.", "info");
+                }
+            });
         }
 
 
@@ -583,7 +592,6 @@
             }
         }
 
-        // Function to save data to localStorage
         function saveData() {
             const inputFields = document.querySelectorAll('#infoTable input');
             inputFields.forEach((input) => {
@@ -592,7 +600,13 @@
                 localStorage.setItem(fieldName, fieldValue);
             });
 
-            alert("Data saved successfully!");
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Information Saved Successfully',
+                showConfirmButton: false,
+                timer: 2000, 
+            });
         }
 
         // Function to load data from localStorage

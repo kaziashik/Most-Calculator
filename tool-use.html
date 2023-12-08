@@ -78,6 +78,7 @@
       margin: 0;
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -363,54 +364,58 @@
       //console.log("a:", a, "b:", b, "g:", g, "a2:", a2, "b2:", b2, "p:", p, "u:",u, "a3:", a3,"b3",b3,"cf:",cf,"rf:",rf);
 
       if (!isNaN(a) && !isNaN(b) && !isNaN(g) && !isNaN(a2) && !isNaN(b2) && !isNaN(p) && !isNaN(u) && !isNaN(a3) && !isNaN(b3) && !isNaN(p2) && !isNaN(a4)) {
-        var sum = cf * ((10 * a) + (10 * b) + (10 * g) + (10 * a2) + (10 * b2) + (10 * p) + (rf * 10 * u) + (10 * a3) + (10 * b3) + (10 * p2) + (10 * a4));
-        console.log('Sum:', sum);
-        document.getElementById("result").textContent = sum;
-      } else {
-        alert("Please enter valid numbers for input.");
-      }
+  var sum = cf * ((10 * a) + (10 * b) + (10 * g) + (10 * a2) + (10 * b2) + (10 * p) + (rf * 10 * u) + (10 * a3) + (10 * b3) + (10 * p2) + (10 * a4));
+  console.log('Sum:', sum);
+  document.getElementById("result").textContent = sum;
 
+  var time = sum * 0.00001;
+  var standardTime = time * (1 + 0.15);
 
+  // Check if 'sum' or 'time' is NaN
+  if (!isNaN(sum) && !isNaN(time)) {
+    document.getElementById("time").textContent = time;
+    document.getElementById("standardTime").textContent = standardTime.toFixed(7);
 
-      var time = sum * 0.00001;
-      var standardTime = time * (1 + 0.15);
-      //console.log('standardTime:', standardTime);
+    // Example calculation
+    let result = standardTime.toFixed(7);
 
-      // document.getElementById("time").textContent = time;
-      // document.getElementById("standardTime").textContent = standardTime.toFixed(7);
+    // Get the current stage and process index from localStorage
+    const currentProcessIndex = localStorage.getItem('currentProcessIndex');
+    const currentStage = localStorage.getItem('currentStage');
 
+    // Store the result in localStorage
+    localStorage.setItem(`result${currentStage}_${currentProcessIndex}`, result);
 
-      // Check if 'sum' or 'time' is NaN
-      if (!isNaN(sum) && !isNaN(time)) {
-        document.getElementById("time").textContent = time;
-        document.getElementById("standardTime").textContent = standardTime.toFixed(7);
+    // Operation and Transportation
+    const operationValue = parseFloat(document.getElementById('Operation').value) || 0;
+    const transportationValue = parseFloat(document.getElementById('Transportation').value) || 0;
 
-        // Example calculation
-        let result = standardTime.toFixed(7);;  // Do the necessary calculation here
+    // Add to the existing values in localStorage
+    const currentOperationSum = parseFloat(localStorage.getItem(`operationStage${currentStage}`) || 0);
+    const currentTransportationSum = parseFloat(localStorage.getItem(`transportationStage${currentStage}`) || 0);
 
-        // Get the current stage and process index from localStorage
-        const currentProcessIndex = localStorage.getItem('currentProcessIndex');
-        const currentStage = localStorage.getItem('currentStage');
+    localStorage.setItem(`operationStage${currentStage}`, currentOperationSum + operationValue);
+    localStorage.setItem(`transportationStage${currentStage}`, currentTransportationSum + transportationValue);
 
-        // Store the result in localStorage
-        localStorage.setItem(`result${currentStage}_${currentProcessIndex}`, result);
+    Swal.fire({
+      icon: 'success',
+      title: 'Calculat Successfully',
+      text: 'Your data has been saved. Redirecting to the main page...',
+      timer: 2000, 
+      showConfirmButton: false
+    });
+    setTimeout(() => {
+      window.location.href = 'testingbutton2.html';
+    }, 2000); 
+  }
+} else {
+  Swal.fire({
+    icon: 'error',
+    title: 'Invalid Input',
+    text: 'Please enter valid numbers for input.',
+  });
+}
 
-        // Operation and Transportation
-
-        const operationValue = parseFloat(document.getElementById('Operation').value) || 0;
-        const transportationValue = parseFloat(document.getElementById('Transportation').value) || 0;
-
-        // Add to the existing values in localStorage
-        const currentOperationSum = parseFloat(localStorage.getItem(`operationStage${currentStage}`) || 0);
-        const currentTransportationSum = parseFloat(localStorage.getItem(`transportationStage${currentStage}`) || 0);
-
-        localStorage.setItem(`operationStage${currentStage}`, currentOperationSum + operationValue);
-        localStorage.setItem(`transportationStage${currentStage}`, currentTransportationSum + transportationValue);
-
-        // Redirect back to the main page
-        window.location.href = 'testingbutton2.html';
-
-      }
 
 
 

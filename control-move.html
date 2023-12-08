@@ -82,6 +82,7 @@
       /* Consistent border-radius */
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -285,52 +286,57 @@
       }
 
       if (!isNaN(a) && !isNaN(b) && !isNaN(g) && !isNaN(m) && !isNaN(x) && !isNaN(i) && !isNaN(a2)) {
-        var sum = cf * ((10 * a) + (10 * b) + (10 * g) + (10 * m) + (10 * x) + (10 * i) + (10 * a2));
-        document.getElementById("result").textContent = sum;
-      } else {
-        alert("Please enter valid numbers for input.");
-      }
+  var sum = cf * ((10 * a) + (10 * b) + (10 * g) + (10 * m) + (10 * x) + (10 * i) + (10 * a2));
+  document.getElementById("result").textContent = sum;
 
-      var time = sum * 0.00001;
-      var standardTime = time * (1 + 0.15);
+  var time = sum * 0.00001;
+  var standardTime = time * (1 + 0.15);
 
-      if (!isNaN(sum) && !isNaN(time)) {
+  if (!isNaN(sum) && !isNaN(time)) {
+    document.getElementById("time").textContent = time;
+    document.getElementById("standardTime").textContent = standardTime.toFixed(7);
 
-        document.getElementById("time").textContent = time;
-        document.getElementById("standardTime").textContent = standardTime.toFixed(7);
+    // Example calculation
+    let result = standardTime.toFixed(7);
 
-        // Example calculation
-        let result = standardTime.toFixed(7);;  // Do the necessary calculation here
+    // Get the current stage and process index from localStorage
+    const currentProcessIndex = localStorage.getItem('currentProcessIndex');
+    const currentStage = localStorage.getItem('currentStage');
 
-        // Get the current stage and process index from localStorage
-        const currentProcessIndex = localStorage.getItem('currentProcessIndex');
-        const currentStage = localStorage.getItem('currentStage');
+    // Operation and Transportation
+    const operationValue = parseFloat(document.getElementById('Operation').value) || 0;
+    const transportationValue = parseFloat(document.getElementById('Transportation').value) || 0;
 
-        // Store current stage in localStorage
-        // localStorage.setItem('currentStages', currentStage);
+    // Add to the existing values in localStorage
+    const currentOperationSum = parseFloat(localStorage.getItem(`operationStage${currentStage}`) || 0);
+    const currentTransportationSum = parseFloat(localStorage.getItem(`transportationStage${currentStage}`) || 0);
 
-        // Operation and Transportation
+    localStorage.setItem(`operationStage${currentStage}`, currentOperationSum + operationValue);
+    localStorage.setItem(`transportationStage${currentStage}`, currentTransportationSum + transportationValue);
 
-        const operationValue = parseFloat(document.getElementById('Operation').value) || 0;
-        const transportationValue = parseFloat(document.getElementById('Transportation').value) || 0;
+    // Store the result in localStorage
+    localStorage.setItem(`result${currentStage}_${currentProcessIndex}`, result);
 
-        // Add to the existing values in localStorage
-        const currentOperationSum = parseFloat(localStorage.getItem(`operationStage${currentStage}`) || 0);
-        const currentTransportationSum = parseFloat(localStorage.getItem(`transportationStage${currentStage}`) || 0);
+    Swal.fire({
+      icon: 'success',
+      title: 'Calculat Successfully',
+      text: 'Your data has been saved. Redirecting to the main page...',
+      timer: 2000, 
+      showConfirmButton: false
+    });
 
-        localStorage.setItem(`operationStage${currentStage}`, currentOperationSum + operationValue);
-        localStorage.setItem(`transportationStage${currentStage}`, currentTransportationSum + transportationValue);
+    setTimeout(() => {
+      window.location.href = 'testingbutton2.html';
+    }, 2000);
+  }
+} else {
+  Swal.fire({
+    icon: 'error',
+    title: 'Invalid Input',
+    text: 'Please enter valid numbers for input.',
+  });
+}
 
-        // Store the result in localStorage
-        localStorage.setItem(`result${currentStage}_${currentProcessIndex}`, result);
-
-        //sessionStorage.setItem('calculationCompleted', 'true');
-
-        // Redirect back to the main page
-        window.location.href = 'testingbutton2.html';
-
-
-      }
 
 
     }
