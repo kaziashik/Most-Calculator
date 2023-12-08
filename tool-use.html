@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Tool Use</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,19 +31,21 @@
       margin-bottom: 10px;
     }
 
-    select, input[type="number"], button {
+    select,
+    input[type="number"],
+    button {
       box-sizing: border-box;
-            /* Include padding and border in the width */
-            width: 100%;
-            /* Full width */
-            padding: 10px;
-            /* Consistent padding */
-            margin: 10px 0;
-            /* Consistent margin */
-            border: 1px solid #ddd;
-            /* Consistent border */
-            border-radius: 5px;
-            /* Consistent border-radius */
+      /* Include padding and border in the width */
+      width: 100%;
+      /* Full width */
+      padding: 10px;
+      /* Consistent padding */
+      margin: 10px 0;
+      /* Consistent margin */
+      border: 1px solid #ddd;
+      /* Consistent border */
+      border-radius: 5px;
+      /* Consistent border-radius */
     }
 
     button {
@@ -62,18 +65,21 @@
         padding: 10px;
       }
 
-      select, input[type="number"], button {
+      select,
+      input[type="number"],
+      button {
         padding: 8px;
       }
     }
 
     input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            /* -webkit-appearance: none; */
-            margin: 0;
+    input[type="number"]::-webkit-outer-spin-button {
+      /* -webkit-appearance: none; */
+      margin: 0;
     }
   </style>
 </head>
+
 <body>
   <div class="container">
 
@@ -83,7 +89,7 @@
     <form id="inputForm">
       <label for="rf">Enter Rf:</label>
       <input type="number" id="rf" required placeholder="Enter Rf">
-      
+
       <label for="cf">Enter Cf:</label>
       <input type="number" id="cf" required placeholder="Enter Cf">
     </form>
@@ -126,7 +132,7 @@
         <option value="2">2</option>
         <option value="3">3</option>
         <option value="10">10</option>
-        
+
       </select>
 
       <label for="g">Enter number G:</label>
@@ -292,14 +298,14 @@
 
     </form>
     <br>
-    
+
     <!-- Classification Time (TMU) -->
 
     <h3>Classification Time (TMU)</h3>
     <form id="inputForm2">
       <label for="Operation">Operation:</label>
       <input type="number" id="Operation" required placeholder="Operation">
-      
+
       <label for="Transportation">Transportation:</label>
       <input type="number" id="Transportation" required placeholder="Transportation">
 
@@ -364,37 +370,49 @@
         alert("Please enter valid numbers for input.");
       }
 
+
+
       var time = sum * 0.00001;
       var standardTime = time * (1 + 0.15);
       //console.log('standardTime:', standardTime);
 
-      document.getElementById("time").textContent = time;
-      document.getElementById("standardTime").textContent = standardTime.toFixed(7);
+      // document.getElementById("time").textContent = time;
+      // document.getElementById("standardTime").textContent = standardTime.toFixed(7);
 
-      // Example calculation
-      let result = standardTime.toFixed(7);;  // Do the necessary calculation here
 
-      // Get the current stage and process index from localStorage
-      const currentProcessIndex = localStorage.getItem('currentProcessIndex');
-      const currentStage = localStorage.getItem('currentStage');
+      // Check if 'sum' or 'time' is NaN
+      if (!isNaN(sum) && !isNaN(time)) {
+        document.getElementById("time").textContent = time;
+        document.getElementById("standardTime").textContent = standardTime.toFixed(7);
 
-      // Store the result in localStorage
-      localStorage.setItem(`result${currentStage}_${currentProcessIndex}`, result);
+        // Example calculation
+        let result = standardTime.toFixed(7);;  // Do the necessary calculation here
 
-      // Operation and Transportation
-      
-      const operationValue = parseFloat(document.getElementById('Operation').value) || 0;
-      const transportationValue = parseFloat(document.getElementById('Transportation').value) || 0;
+        // Get the current stage and process index from localStorage
+        const currentProcessIndex = localStorage.getItem('currentProcessIndex');
+        const currentStage = localStorage.getItem('currentStage');
 
-      // Add to the existing values in localStorage
-      const currentOperationSum = parseFloat(localStorage.getItem(`operationStage${currentStage}`) || 0);
-      const currentTransportationSum = parseFloat(localStorage.getItem(`transportationStage${currentStage}`) || 0);
+        // Store the result in localStorage
+        localStorage.setItem(`result${currentStage}_${currentProcessIndex}`, result);
 
-      localStorage.setItem(`operationStage${currentStage}`, currentOperationSum + operationValue);
-      localStorage.setItem(`transportationStage${currentStage}`, currentTransportationSum + transportationValue);
+        // Operation and Transportation
 
-      // Redirect back to the main page
-      window.location.href = 'testingbutton2.html';
+        const operationValue = parseFloat(document.getElementById('Operation').value) || 0;
+        const transportationValue = parseFloat(document.getElementById('Transportation').value) || 0;
+
+        // Add to the existing values in localStorage
+        const currentOperationSum = parseFloat(localStorage.getItem(`operationStage${currentStage}`) || 0);
+        const currentTransportationSum = parseFloat(localStorage.getItem(`transportationStage${currentStage}`) || 0);
+
+        localStorage.setItem(`operationStage${currentStage}`, currentOperationSum + operationValue);
+        localStorage.setItem(`transportationStage${currentStage}`, currentTransportationSum + transportationValue);
+
+        // Redirect back to the main page
+        window.location.href = 'testingbutton2.html';
+
+      }
+
+
 
 
     }
@@ -403,4 +421,5 @@
 
   </script>
 </body>
+
 </html>
