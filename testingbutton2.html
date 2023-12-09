@@ -171,10 +171,6 @@
                         <td><input type="text" id="Product"></td>
                     </tr>
 
-
-
-
-                    <!-- Add more rows as needed -->
                 </table>
                 <br>
 
@@ -290,6 +286,14 @@
                     </tr>
                 </tbody>
             </table>
+
+            <br>
+            <br>
+
+            <div class="chart-container">
+                <canvas id="otidsChart"></canvas>
+            </div>
+
     </div>
 
     <script>
@@ -506,11 +510,6 @@
             // Check if data is available
             if (labels.length > 0 && data.length > 0) {
 
-                // Destroy existing chart instance if it exists
-                // if (myChartInstance) {
-                //     myChartInstance.destroy();
-                // }
-
                 const ctx = document.getElementById('myChart').getContext('2d');
                 const myChartInstance = new Chart(ctx, {
                     type: 'bar',
@@ -538,6 +537,9 @@
                 console.log("No data available to generate chart");
             }
         }
+
+
+
         function extractDataFromTable() {
             // Arrays to hold the labels (stage names) and data (total sums)
             let labels = [];
@@ -569,6 +571,7 @@
             refreshResults();
             generateBarChart();
             updateOTIDSTable();
+            createOTIDSBarChart();
         };
 
         function sumOperationTransportationForStage(stage) {
@@ -581,6 +584,101 @@
             }
             return { operationSum, transportationSum };
         }
+
+        // Extract data from OTIDS Table
+
+        function extractDataFromOTIDSTable() {
+            const table = document.getElementById('totalOTIDSTable');
+            let labels = [];
+            let datasets = [];
+
+            const headerCells = table.rows[0].cells;
+            for (let i = 1; i < headerCells.length; i++) {
+                labels.push(headerCells[i].innerText);
+            }
+
+            for (let i = 1; i < table.rows.length; i++) {
+                const row = table.rows[i];
+                let data = [];
+
+                for (let j = 1; j < row.cells.length; j++) {
+                    data.push(parseFloat(row.cells[j].innerText) || 0);
+                }
+
+                const dataset = {
+                    label: row.cells[0].innerText,
+                    data: data,
+                    backgroundColor: generateRandomColor(),
+                    borderColor: generateRandomColor(),
+                    borderWidth: 1
+                };
+                datasets.push(dataset);
+            }
+            return { labels, datasets };
+        }
+
+        //Generate Random Colors
+        function generateRandomColor() {
+            const r = Math.floor(Math.random() * 255);
+            const g = Math.floor(Math.random() * 255);
+            const b = Math.floor(Math.random() * 255);
+            return `rgba(${r}, ${g}, ${b}, 0.5)`;
+        }
+
+        //Create bar chart for OTIDS table
+        function createOTIDSBarChart() {
+            // Assuming you have four stages and the table is structured correctly
+            const table = document.getElementById('totalOTIDSTable');
+            const labels = ['OPERATION', 'TRANSPORTATION', 'INSPECTION', 'DELAY', 'STORAGE']; // Categories
+            const datasets = [];
+
+            // Each dataset represents a stage
+            for (let stage = 1; stage <= 4; stage++) {
+                const data = [];
+                for (let i = 1; i < table.rows.length; i++) {
+                    const value = table.rows[i].cells[stage].innerText || '0'; // Get the value for each category
+                    data.push(parseFloat(value));
+                }
+                // Add dataset for each stage
+                datasets.push({
+                    label: `STAGE ${stage}`,
+                    data: data,
+                    // You can customize the background color for each stage or use a function to generate random colors
+                    backgroundColor: generateStageColor(stage),
+                });
+            }
+
+            const ctx = document.getElementById('otidsChart').getContext('2d');
+            if (window.otidsBarChart) {
+                window.otidsBarChart.destroy(); // Destroy the previous instance if it exists
+            }
+            window.otidsBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: datasets,
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                    // The barThickness can be set to 'flex' or specific number to adjust the bar width
+                    // You can set this within the dataset if needed
+                    barThickness: 'flex',
+                    // Enabling grouping and adjusting categoryPercentage and barPercentage can help achieve the desired look
+                    categoryPercentage: 0.5,
+                    barPercentage: 1.0,
+                },
+            });
+        }
+
+        function generateStageColor(stage) {
+    // Define specific colors for each stage
+    const stageColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']; // Example colors
+    return stageColors[stage - 1] || '#000000'; // Default to black if no color is defined
+}
 
         //update OTIDS Table
         function updateOTIDSTable() {
@@ -601,12 +699,12 @@
                 localStorage.setItem(fieldName, fieldValue);
             });
 
-            
+
             Swal.fire({
                 icon: 'success',
                 title: 'Information Saved Successfully',
                 showConfirmButton: false,
-                timer: 2000, 
+                timer: 2000,
             });
         }
 
