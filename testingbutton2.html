@@ -119,6 +119,16 @@
             width: 25%;
 
         }
+
+        .separator-line {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+            margin-top: 20px;
+            /* Adjust as needed for space above the line */
+            margin-bottom: 20px;
+            /* Adjust as needed for space below the line */
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -232,9 +242,12 @@
             <button id="resetButton">Reset</button>
             <br>
 
-            <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+            <div class="chart-container" style="position: relative; height:30vh; width:80vw">
                 <canvas id="myChart"></canvas>
             </div>
+            <br>
+            <hr class="separator-line">
+            <br>
 
             <h2>Compare the sum of OTIDS in every stage.</h2>
 
@@ -675,10 +688,10 @@
         }
 
         function generateStageColor(stage) {
-    // Define specific colors for each stage
-    const stageColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']; // Example colors
-    return stageColors[stage - 1] || '#000000'; // Default to black if no color is defined
-}
+            // Define specific colors for each stage
+            const stageColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']; // Example colors
+            return stageColors[stage - 1] || '#000000'; // Default to black if no color is defined
+        }
 
         //update OTIDS Table
         function updateOTIDSTable() {
