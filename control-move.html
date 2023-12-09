@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Control Move</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,7 +31,9 @@
       margin-bottom: 10px;
     }
 
-    select, input[type="number"], button {
+    select,
+    input[type="number"],
+    button {
       width: 100%;
       padding: 10px;
       margin-bottom: 10px;
@@ -55,30 +58,33 @@
         padding: 10px;
       }
 
-      select, input[type="number"], button {
+      select,
+      input[type="number"],
+      button {
         padding: 8px;
       }
     }
 
     select,
-        input[type="number"],
-        button {
-            box-sizing: border-box;
-            /* Include padding and border in the width */
-            width: 100%;
-            /* Full width */
-            padding: 10px;
-            /* Consistent padding */
-            margin: 10px 0;
-            /* Consistent margin */
-            border: 1px solid #ddd;
-            /* Consistent border */
-            border-radius: 5px;
-            /* Consistent border-radius */
-        }
-    
+    input[type="number"],
+    button {
+      box-sizing: border-box;
+      /* Include padding and border in the width */
+      width: 100%;
+      /* Full width */
+      padding: 10px;
+      /* Consistent padding */
+      margin: 10px 0;
+      /* Consistent margin */
+      border: 1px solid #ddd;
+      /* Consistent border */
+      border-radius: 5px;
+      /* Consistent border-radius */
+    }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
   <div class="container">
 
@@ -219,20 +225,20 @@
     </form>
 
     <h3>Input Rf and Cf</h3>
-        <form id="inputForm">
-          <label for="rf">Enter Rf:</label>
-          <input type="number" id="rf" required placeholder="Enter Rf">
-          
-          <label for="cf">Enter Cf:</label>
-          <input type="number" id="cf" required placeholder="Enter Cf">
-        </form>
-        <br>
+    <form id="inputForm">
+      <label for="rf">Enter Rf:</label>
+      <input type="number" id="rf" required placeholder="Enter Rf">
+
+      <label for="cf">Enter Cf:</label>
+      <input type="number" id="cf" required placeholder="Enter Cf">
+    </form>
+    <br>
 
     <h3>Classification Time (TMU)</h3>
     <form id="inputForm2">
       <label for="Operation">Operation:</label>
       <input type="number" id="Operation" required placeholder="Operation">
-      
+
       <label for="Transportation">Transportation:</label>
       <input type="number" id="Transportation" required placeholder="Transportation">
 
@@ -280,49 +286,62 @@
       }
 
       if (!isNaN(a) && !isNaN(b) && !isNaN(g) && !isNaN(m) && !isNaN(x) && !isNaN(i) && !isNaN(a2)) {
-        var sum = cf * ((10 * a) + (10 * b) + (10 * g) + (10 * m) + (10 * x) + (10 * i) + (10 * a2));
-        document.getElementById("result").textContent = sum;
-      } else {
-        alert("Please enter valid numbers for A.");
-      }
+  var sum = cf * ((10 * a) + (10 * b) + (10 * g) + (10 * m) + (10 * x) + (10 * i) + (10 * a2));
+  document.getElementById("result").textContent = sum;
 
-      var time = sum * 0.00001;
-      var standardTime = time * (1 + 0.15);
+  var time = sum * 0.00001;
+  var standardTime = time * (1 + 0.15);
 
-      document.getElementById("time").textContent = time;
-      document.getElementById("standardTime").textContent = standardTime.toFixed(7);
+  if (!isNaN(sum) && !isNaN(time)) {
+    document.getElementById("time").textContent = time;
+    document.getElementById("standardTime").textContent = standardTime.toFixed(7);
 
-      // Example calculation
-      let result = standardTime.toFixed(7);;  // Do the necessary calculation here
+    // Example calculation
+    let result = standardTime.toFixed(7);
 
-      // Get the current stage and process index from localStorage
-      const currentProcessIndex = localStorage.getItem('currentProcessIndex');
-      const currentStage = localStorage.getItem('currentStage');
+    // Get the current stage and process index from localStorage
+    const currentProcessIndex = localStorage.getItem('currentProcessIndex');
+    const currentStage = localStorage.getItem('currentStage');
 
-      // Store current stage in localStorage
-      // localStorage.setItem('currentStages', currentStage);
+    // Operation and Transportation
+    const operationValue = parseFloat(document.getElementById('Operation').value) || 0;
+    const transportationValue = parseFloat(document.getElementById('Transportation').value) || 0;
 
-      // Operation and Transportation
-      
-      const operationValue = parseFloat(document.getElementById('Operation').value) || 0;
-      const transportationValue = parseFloat(document.getElementById('Transportation').value) || 0;
+    // Add to the existing values in localStorage
+    const currentOperationSum = parseFloat(localStorage.getItem(`operationStage${currentStage}`) || 0);
+    const currentTransportationSum = parseFloat(localStorage.getItem(`transportationStage${currentStage}`) || 0);
 
-      // Add to the existing values in localStorage
-      const currentOperationSum = parseFloat(localStorage.getItem(`operationStage${currentStage}`) || 0);
-      const currentTransportationSum = parseFloat(localStorage.getItem(`transportationStage${currentStage}`) || 0);
+    localStorage.setItem(`operationStage${currentStage}`, currentOperationSum + operationValue);
+    localStorage.setItem(`transportationStage${currentStage}`, currentTransportationSum + transportationValue);
 
-      localStorage.setItem(`operationStage${currentStage}`, currentOperationSum + operationValue);
-      localStorage.setItem(`transportationStage${currentStage}`, currentTransportationSum + transportationValue);
+    // Store the result in localStorage
+    localStorage.setItem(`result${currentStage}_${currentProcessIndex}`, result);
 
-      // Store the result in localStorage
-      localStorage.setItem(`result${currentStage}_${currentProcessIndex}`, result);
+    Swal.fire({
+      icon: 'success',
+      title: 'Calculat Successfully',
+      text: 'Your data has been saved. Redirecting to the main page...',
+      timer: 2000, 
+      showConfirmButton: false
+    });
 
-      //sessionStorage.setItem('calculationCompleted', 'true');
-
-      // Redirect back to the main page
+    setTimeout(() => {
       window.location.href = 'testingbutton2.html';
+    }, 2000);
+  }
+} else {
+  Swal.fire({
+    icon: 'error',
+    title: 'Invalid Input',
+    text: 'Please enter valid numbers for input.',
+  });
+}
+
+
+
     }
 
   </script>
 </body>
+
 </html>
